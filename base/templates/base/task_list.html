@@ -17,13 +17,12 @@
 <h1>
     My To Do List
 </h1>
-<a href="{% url 'task-create' %}">
-    Create A New Task
-</a>
 <table>
+    {% if not tasks %}
     <tr>
-        <th>Task</th>
+        <td colspan="4">No Tasks</td>
     </tr>
+    {% endif %}
     {% for task in tasks %}
     <tr>
         <td>{{ task.title }}</td>
@@ -33,5 +32,8 @@
     </tr>
     {% endfor %}
 </table>
+<a href="{% url 'task-create' %}">
+    Create A New Task
+</a>
 </body>
 </html>
