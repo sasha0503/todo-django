@@ -1,7 +1,7 @@
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from django.http import HttpResponse
+from django.urls import reverse_lazy
 
 from base.models import Task
 
@@ -21,5 +21,19 @@ class TaskDetail(DetailView):
 class TaskCreate(CreateView):
     model = Task
     template_name = 'base/task_create.html'
-    context_object_name = 'task'
     fields = '__all__'
+    success_url = reverse_lazy('tasks')
+
+
+class TaskUpdate(UpdateView):
+    model = Task
+    template_name = 'base/task_udpate.html'
+    fields = ['description', 'complete', 'title']
+    success_url = reverse_lazy('tasks')
+
+
+class TaskDelete(DeleteView):
+    model = Task
+    template_name = 'base/task_delete.html'
+    context_object_name = 'task'
+    success_url = reverse_lazy('tasks')
