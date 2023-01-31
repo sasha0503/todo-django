@@ -8,7 +8,7 @@
 {% if request.user.is_authenticated %}
     {{ request.user }}
     <p>
-        <a href="{% url 'tasks' %}">logout</a>
+        <a href="{% url 'logout' %}">logout</a>
     </p>
 {% else %}
     <a href="{% url 'login' %}">login</a>
