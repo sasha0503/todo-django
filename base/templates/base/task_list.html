@@ -1,39 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My To Do List</title>
-</head>
-<body>
-{% if request.user.is_authenticated %}
-    {{ request.user }}
-    <p>
-        <a href="{% url 'logout' %}">logout</a>
-    </p>
-{% else %}
-    <a href="{% url 'login' %}">login</a>
-{% endif %}
-<hr>
-<h1>
+{% extends 'base/main.html' %}
+{% block content %}
+    <div class="header-bar">
+    <div>
+        <h1>Hello {{ request.user.username|title }}</h1>
+        <h3>You have {{ count }} incomplete task{{ count|pluralize:"s" }}</h3>
+    </div>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'logout' %}">logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">login</a>
+        {% endif %}
+    </div>
+<h1 style="padding-left: 10px">
     My To Do List
 </h1>
-<table>
-    {% if not tasks %}
-    <tr>
-        <td colspan="4">No Tasks</td>
-    </tr>
-    {% endif %}
+<div class="task-items-wrapper">
     {% for task in tasks %}
-    <tr>
-        <td>{{ task.title }}</td>
-        <td><a href="{% url 'task' task.id %}">View</a></td>
-        <td><a href="{% url 'task-update' task.id %}">Update</a></td>
-        <td><a href="{% url 'task-delete' task.id %}">Delete</a></td>
-    </tr>
+    <div class="task-wrapper">
+        <div class="task-title">
+            {% if task.complete %}
+                <div class="task-complete-icon"></div>
+                <div>
+                <s><i><a href="{% url 'task-update' task.id %}">{{ task.title }}</a></i></s>
+                </div>
+            {% else %}
+                <div class="task-incomplete-icon"></div>
+                <div>
+                <a href="{% url 'task-update' task.id %}">{{ task.title }}</a>
+                </div>
+            {% endif %}
+        </div>
+    <div class="delete-task">
+        <a href="{% url 'task-delete' task.id %}">&#215;</a>
+    </div>
+    </div>
     {% endfor %}
-</table>
+</div>
 <a href="{% url 'task-create' %}">
     Create A New Task
 </a>
-</body>
-</html>
+{% endblock content %}
