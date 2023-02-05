@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,6 +10,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
 
+from base.forms import CreateForm, UpdateForm
 from base.models import Task
 
 
@@ -62,8 +64,8 @@ class TaskDetail(LoginRequiredMixin, DetailView):
 
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
+    form_class = CreateForm
     template_name = 'base/task_create.html'
-    fields = ['title', 'description']
     success_url = reverse_lazy('tasks')
 
     def form_valid(self, form):
@@ -73,8 +75,8 @@ class TaskCreate(LoginRequiredMixin, CreateView):
 
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
+    form_class = UpdateForm
     template_name = 'base/task_update.html'
-    fields = ['title', 'description']
     success_url = reverse_lazy('tasks')
 
 
