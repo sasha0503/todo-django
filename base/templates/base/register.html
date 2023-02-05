@@ -6,10 +6,22 @@
         </h1>
         <div><a href="{% url 'login' %}">назад</a></div>
     </div>
-
-    <form method="POST" style="padding: 10px">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="створити" class="button">
-    </form>
+    <div class="card-body">
+        <form method="POST" style="padding: 10px">
+            {% csrf_token %}
+            <p>
+                <label>Вигадай ім'я</label>
+                <span style="padding-left: 10px">{{ form.username }}</span>
+            </p>
+            <p>
+                <label>Пароль</label>
+                <span style="padding-left: 67px">{{ form.password1 }}</span>
+            </p>
+            <p>
+                <label>Пароль ще раз</label>
+                {{ form.password2 }}
+            </p>
+            <input style="margin-top:10px" type="submit" value="створити" class="button">
+        </form>
+    </div>
 {% endblock content %}

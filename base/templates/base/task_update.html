@@ -8,7 +8,14 @@
     </div>
     <form method="POST" action="" style="padding: 10px">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p>
+            <label>Назва</label>
+            <span style="padding-left: 20px">{{ form.title }}</span>
+        </p>
+        <p>
+            <label>Опис</label>
+            <span style="padding-left: 29px">{{ form.description }}</span>
+        </p>
         <input type="submit" value="Оновити" class="button">
     </form>
 {% endblock content %}

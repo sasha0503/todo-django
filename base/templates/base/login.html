@@ -7,8 +7,15 @@
     </div>
     <form method="POST" style="padding-left: 10px">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="login" class="button">
+        <p>
+            <label>Ім'я</label>
+            <span style="padding-left: 20px">{{ form.username }}</span>
+        </p>
+        <p>
+            <label>Пароль</label>
+            {{ form.password }}
+        </p>
+        <input type="submit" value="ввійти" class="button">
     </form>
 
     <p style="padding-left: 10px">
