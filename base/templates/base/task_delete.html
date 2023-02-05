@@ -1,12 +1,14 @@
 {% extends 'base/main.html' %}
 {% block content %}
-<h1>
-    Delete page
-</h1>
-<a href="{% url 'tasks' %}"> Go Back </a>
-<form method="POST">
-    {% csrf_token %}
-    <p>  Are you sure you want to delete {{ task.title }}? </p>
-    <input type="submit" value="Delete">
-</form>
-{% endblock content%}
+    <div class="header-bar">
+        <h1>
+            Delete page
+        </h1>
+        <div><a href="{% url 'tasks' %}">назад</a></div>
+    </div>
+    <form style="padding: 10px" method="POST">
+        {% csrf_token %}
+        <p style="font-size: larger"> Ти впевнений, що хочеш видалити завдання <b>"{{ task.title }}"?</b></p>
+        <input type="submit" value="Видалити" class="button">
+    </form>
+{% endblock content %}

@@ -48,6 +48,9 @@ class TaskList(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['tasks'] = context['tasks'].filter(user=self.request.user)
         context['count'] = context['tasks'].filter(complete=False).count()
+        count = str(context['count'])
+        context['count_plural'] = not (
+                    count.endswith('1') or count.endswith('2') or count.endswith('3') or count.endswith('4'))
         return context
 
 
@@ -71,7 +74,7 @@ class TaskCreate(LoginRequiredMixin, CreateView):
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     template_name = 'base/task_update.html'
-    fields = ['title', 'description', 'complete']
+    fields = ['title', 'description']
     success_url = reverse_lazy('tasks')
 
 
@@ -80,3 +83,11 @@ class TaskDelete(LoginRequiredMixin, DeleteView):
     template_name = 'base/task_delete.html'
     context_object_name = 'task'
     success_url = reverse_lazy('tasks')
+
+
+def mark_complete(request, task_id):
+    if request.method == 'POST':
+        task = Task.objects.get(id=task_id)
+        task.complete = not task.complete
+        task.save()
+        return redirect('tasks')

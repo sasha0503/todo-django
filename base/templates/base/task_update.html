@@ -1,12 +1,14 @@
 {% extends 'base/main.html' %}
 {% block content %}
-<h1>
-    {{ task.title }}
-</h1>
-<a href="{% url 'tasks' %}"> Go Back </a>
-<form method="POST" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Update">
-</form>
-{% endblock content%}
+    <div class="header-bar">
+        <h1>
+            {{ task.title }}
+        </h1>
+        <div><a href="{% url 'tasks' %}">назад</a></div>
+    </div>
+    <form method="POST" action="" style="padding: 10px">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Оновити" class="button">
+    </form>
+{% endblock content %}

@@ -1,16 +1,17 @@
 {% extends 'base/main.html' %}
 {% block content %}
-<h1>
-    Login
-</h1>
+    <div class="header-bar">
+        <h1>
+            Вхід
+        </h1>
+    </div>
+    <form method="POST" style="padding-left: 10px">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="login" class="button">
+    </form>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="login">
-</form>
-
-<p>
-    Don't have an account? <a href="{% url 'register' %}">Sign up</a>
-</p>
-{% endblock content%}
+    <p style="padding-left: 10px">
+        Немає акаунту? <u><a href="{% url 'register' %}" style="color: darkblue">Створити</a></u>
+    </p>
+{% endblock content %}

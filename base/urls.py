@@ -1,8 +1,9 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
-from .views import TaskList, TaskDetail, TaskCreate, TaskUpdate, TaskDelete, CustomLoginView, RegisterView
+from .views import TaskList, TaskDetail, TaskCreate, TaskUpdate, TaskDelete, CustomLoginView, RegisterView, mark_complete
 
 urlpatterns = [
+    path('mark_complete/<int:task_id>', mark_complete, name='mark-complete'),
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(next_page='tasks'), name='logout'),

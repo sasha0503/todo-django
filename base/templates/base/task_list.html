@@ -1,42 +1,79 @@
 {% extends 'base/main.html' %}
 {% block content %}
     <div class="header-bar">
-    <div>
-        <h1>Hello {{ request.user.username|title }}</h1>
-        <h3>You have {{ count }} incomplete task{{ count|pluralize:"s" }}</h3>
-    </div>
-        {% if request.user.is_authenticated %}
-            <a href="{% url 'logout' %}">logout</a>
-        {% else %}
-            <a href="{% url 'login' %}">login</a>
-        {% endif %}
-    </div>
-<h1 style="padding-left: 10px">
-    My To Do List
-</h1>
-<div class="task-items-wrapper">
-    {% for task in tasks %}
-    <div class="task-wrapper">
-        <div class="task-title">
-            {% if task.complete %}
-                <div class="task-complete-icon"></div>
-                <div>
-                <s><i><a href="{% url 'task-update' task.id %}">{{ task.title }}</a></i></s>
-                </div>
+        <div>
+            <h1>Привіт {{ request.user.username|title }}</h1>
+            {% if count == 0 %}
+                <h3>Поки що завдань немає</h3>
+            {% elif count_plural %}
+                <h3>У тебе залишилося {{ count }} завдань</h3>
             {% else %}
-                <div class="task-incomplete-icon"></div>
-                <div>
-                <a href="{% url 'task-update' task.id %}">{{ task.title }}</a>
-                </div>
+                <h3>У тебе залишилося {{ count }} завдання</h3>
             {% endif %}
         </div>
-    <div class="delete-task">
-        <a href="{% url 'task-delete' task.id %}">&#215;</a>
+        <a href="{% url 'logout' %}">вийти</a>
     </div>
+    <div class="task-items-wrapper">
+        {% for task in tasks %}
+            <div class="task-wrapper">
+                <div class="task-title">
+                    {% if task.complete %}
+                    <div class="row">
+                        <form method="POST" action="{% url 'mark-complete' task.id%}" class="mark-complete" id="{{ task.id }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="task_id" value={{task.id}}>
+                         <button type="submit" class="column task-complete-icon task-complete-icon{{ task.id }}"></button>
+                        </form>
+                        <div class="column task-title-text">
+                            <s><i><a href="{% url 'task-update' task.id %}">{{ task.title }}</a></i></s>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="row">
+                        <form method="POST" action="{% url 'mark-complete' task.id%}" class="mark-complete" id="{{ task.id }}">
+                        {% csrf_token %}
+                        <input type="hidden" name="task_id" value={{task.id}}>
+                         <button type="submit" class="column task-incomplete-icon task-incomplete-icon{{ task.id }}"></button>
+                        </form>
+                        <div class="column task-title-text">
+                            <a href="{% url 'task-update' task.id %}">{{ task.title }}</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="delete-task">
+                    <a href="{% url 'task-delete' task.id %}">&#215;</a>
+                </div>
+            </div>
+        {% endfor %}
+
+        <a href="{% url 'task-create' %}" class="bottom_div">
+            Додати завдання
+        </a>
     </div>
-    {% endfor %}
-</div>
-<a href="{% url 'task-create' %}">
-    Create A New Task
-</a>
 {% endblock content %}
+<script>
+     $('.mark-complete').submit(function(e){
+                e.preventDefault()
+
+                const task_id = $(this).attr('id')
+                const url = $(this).attr('action')
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: {
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                        'task_id':task_id,
+                    },
+                    success: function() {
+                        $(`.task-complete-icon${task_id}`).removeClass("task-complete-icon").addClass("task-incomplete-icon");
+                        $(`.task-incomplete-icon${task_id}`).removeClass("task-incomplete-icon").addClass("task-complete-icon");
+                    },
+                    error: function(response) {
+                        console.log('error', response)
+                    }
+                })
+        });
+</script>
