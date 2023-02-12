@@ -168,6 +168,27 @@
     {% block content %}
 
     {% endblock content %}
+    <script>
+
+
+        const openModal = document.querySelectorAll(".open-button");
+        const closeModal = document.querySelectorAll(".close-button");
+
+        function addEventListenerList(list, event, fn) {
+            for (var i = 0, len = list.length; i < len; i++) {
+                list[i].addEventListener(event, fn, false);
+            }
+        }
+        addEventListenerList(openModal, "click", (e) => {
+            const modal = document.querySelector("#modal" + e.target.id);
+            modal.showModal();
+        });
+
+        addEventListenerList(closeModal, "click", (e) => {
+            const modal = document.querySelector("#modal" + e.target.id);
+            modal.close();
+        });
+    </script>
 </div>
 
 </body>

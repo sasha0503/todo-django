@@ -1,6 +1,18 @@
-<h1>
-    Завдання: {{ task.title }}
-</h1>
-<h2>
-    Опис: {{ task.description }}
-</h2>
+<div class="header-bar">
+    <h1>
+        Нове завдання
+    </h1>
+    <div><a href="{% url 'tasks' %}">назад</a></div>
+</div>
+<form method="dialog" action="" style="padding: 10px">
+    {% csrf_token %}
+    <p>
+        <label>Назва</label>
+        <span style="padding-left: 20px">{{ form.title }}</span>
+    </p>
+    <p>
+        <label>Опис</label>
+        <span style="padding-left: 29px">{{ form.description }}</span>
+    </p>
+    <input type="submit" value="Додати" class="button">
+</form>

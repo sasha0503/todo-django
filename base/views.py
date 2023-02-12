@@ -10,7 +10,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.urls import reverse_lazy
 
-from base.forms import CreateForm, UpdateForm
+from base.forms import UpdateForm, CreateForm, LoginForm
 from base.models import Task
 
 
@@ -34,7 +34,7 @@ class RegisterView(FormView):
 
 class CustomLoginView(LoginView):
     template_name = 'base/login.html'
-    fields = '__all__'
+    form_class = LoginForm
     redirect_authenticated_user = True
 
     def get_success_url(self):
@@ -49,6 +49,8 @@ class TaskList(LoginRequiredMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tasks'] = context['tasks'].filter(user=self.request.user)
+        for task in context['tasks']:
+            task.create = task.create.strftime("%B, %d at %H:%M")
         context['count'] = context['tasks'].filter(complete=False).count()
         count = str(context['count'])
         context['count_plural'] = not (

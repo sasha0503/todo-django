@@ -8,11 +8,9 @@
     <form method="POST" style="padding-left: 10px">
         {% csrf_token %}
         <p>
-            <label>Ім'я</label>
-            <span style="padding-left: 20px">{{ form.username }}</span>
+            <span style="padding-left: 0px">{{ form.username }}</span>
         </p>
         <p>
-            <label>Пароль</label>
             {{ form.password }}
         </p>
         <input type="submit" value="ввійти" class="button">
