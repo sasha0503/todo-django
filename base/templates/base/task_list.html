@@ -77,6 +77,11 @@
         <a href="{% url 'task-create' %}" class="bottom_div">
             Додати завдання
         </a>
+        {% if count != 0 %}
+            <a href="{% url 'delete-all' %}" class="bottom_div" style="right: 5px; position: absolute">
+                Очистити список
+            </a>
+        {% endif %}
 
     </div>
 {% endblock content %}
